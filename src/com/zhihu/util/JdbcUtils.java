@@ -15,7 +15,7 @@ import com.zhihu.model.User;
  */
 public class JdbcUtils {
 
-    // 表示定义数据库的用户名
+    // 表示定义数据库的用户名sd
     private static final String USERNAME = "root";
     // 定义数据库的密码
     private static final String PASSWORD = "";
