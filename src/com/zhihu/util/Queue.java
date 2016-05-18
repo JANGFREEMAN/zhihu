@@ -5,7 +5,7 @@ import java.util.List;
 import redis.clients.jedis.Jedis;
 
 /**
- * ¶¨ÒåÒ»¸ö¶ÓÁĞ¶ÔÏó
+ * å®šä¹‰ä¸€ä¸ªé˜Ÿåˆ—å¯¹è±¡
  * @author zhangyx
  *
  */
@@ -22,7 +22,7 @@ public class Queue {
 	
 	
 	/**
-	 * Èë¶ÓÁĞ
+	 * å…¥é˜Ÿåˆ—
 	 * @param user
 	 */
 	public void enQueue(String user){
@@ -30,7 +30,7 @@ public class Queue {
 	}
 	
 	/**
-	 * ³ö¶ÓÁĞ
+	 * å‡ºé˜Ÿåˆ—
 	 * @author zhangyx
 	 * @return 
 	 */
@@ -39,7 +39,7 @@ public class Queue {
 	}
 	
 	/**
-	 * ¸ù¾İÏÂ±íÈ¡Öµ
+	 * æ ¹æ®ä¸‹è¡¨å–å€¼
 	 * @return
 	 */
 	public String get(int index){
@@ -48,7 +48,7 @@ public class Queue {
 	
 	
 	/**
-	 * ÅĞ¶Ï¶ÓÁĞÖĞÊÇ·ñº¬ÓĞuser
+	 * åˆ¤æ–­é˜Ÿåˆ—ä¸­æ˜¯å¦å«æœ‰user
 	 * @author zhangyx
 	 * @param user
 	 * @return
@@ -64,7 +64,7 @@ public class Queue {
 	}
 	
 	/**
-	 * ÅĞ¶Ï¶ÓÁĞÊÇ·ñÎª¿Õ
+	 * åˆ¤æ–­é˜Ÿåˆ—æ˜¯å¦ä¸ºç©º
 	 * @author zhangyx
 	 * @return
 	 */
@@ -74,7 +74,7 @@ public class Queue {
 	}
 	
 	/**
-	 * ·µ»Ø¶ÓÁĞ³¤¶È
+	 * è¿”å›é˜Ÿåˆ—é•¿åº¦
 	 * @author zhangyx
 	 * @return
 	 */

@@ -9,25 +9,25 @@ import java.sql.SQLException;
 import com.zhihu.model.User;
 
 /**
- * JDBC¹¤¾ßÀà
+ * JDBCå·¥å…·ç±»
  * @author zhangyx
  *
  */
 public class JdbcUtils {
 
-    // ±íÊ¾¶¨ÒåÊı¾İ¿âµÄÓÃ»§Ãûsd
+    // è¡¨ç¤ºå®šä¹‰æ•°æ®åº“çš„ç”¨æˆ·åsd
     private static final String USERNAME = "root";
-    // ¶¨ÒåÊı¾İ¿âµÄÃÜÂë
+    // å®šä¹‰æ•°æ®åº“çš„å¯†ç 
     private static final String PASSWORD = "";
-    // ¶¨ÒåÊı¾İ¿âµÄÇı¶¯ĞÅÏ¢
+    // å®šä¹‰æ•°æ®åº“çš„é©±åŠ¨ä¿¡æ¯
     private static final String DRIVER = "com.mysql.jdbc.Driver";
-    // ¶¨Òå·ÃÎÊÊı¾İ¿âµÄµØÖ·
+    // å®šä¹‰è®¿é—®æ•°æ®åº“çš„åœ°å€
     private  static final String URL = "jdbc:mysql://localhost:3306/zhihu?useUnicode=true&characterEncoding=utf8";
-   //±£´æÓÃ»§SQL
+   //ä¿å­˜ç”¨æˆ·SQL
     private static String SQL = "insert into `user` (username,signature,location,industry,sex,company,job,university,major,PersionProfile,followees,followers) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-    // ¶¨ÒåÊı¾İ¿âµÄÁ´½Ó
+    // å®šä¹‰æ•°æ®åº“çš„é“¾æ¥
     private static Connection connection;
-    // ¶¨ÒåsqlÓï¾äµÄÖ´ĞĞ¶ÔÏó
+    // å®šä¹‰sqlè¯­å¥çš„æ‰§è¡Œå¯¹è±¡
     private static PreparedStatement pstmt;
 	
     static{

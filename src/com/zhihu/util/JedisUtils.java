@@ -3,7 +3,7 @@ package com.zhihu.util;
 import redis.clients.jedis.Jedis;
 
 /**
- * Jedis¹¤¾ßÀà
+ * Jediså·¥å…·ç±»
  * @author zhangyx
  *
  */
@@ -15,7 +15,7 @@ public class JedisUtils {
 	private static int PORT = 6379;
 	
 	/**
-	 * »ñÈ¡jedisµ¥Àı
+	 * è·å–jediså•ä¾‹
 	 * @author zhangyx
 	 */
 	public static  Jedis getInstance(){

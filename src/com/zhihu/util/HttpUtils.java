@@ -36,40 +36,40 @@ import org.jsoup.nodes.Element;
 
 public class HttpUtils {
 
-	/**ÖªºõµÇÂ¼Ê×Ò³*/
+	/**çŸ¥ä¹ç™»å½•é¦–é¡µ*/
 	private static String LOGIN_URL = "http://www.zhihu.com/login/email";
-	
-	/**ÖªºõÕËºÅ*/
+
+	/**çŸ¥ä¹è´¦å·*/
 	private static String USERNAME = "448313485@qq.com";
-	
-	/**ÖªºõÃÜÂë*/
+
+	/**çŸ¥ä¹å¯†ç */
 	private static String PASSWORD = "freeman111";
-	
-	/**ÖªºõÓòÃû*/
+
+	/**çŸ¥ä¹åŸŸå*/
 	private static String DOMAIN = "www.zhihu.com";
-	
-	/**µÇÂ¼Ö®ºó±£´æµÄCookie*/
+
+	/**ç™»å½•ä¹‹åä¿å­˜çš„Cookie*/
 	private static CookieStore cookieStore;
-	
+
 	private static String FILE_COOKIE_PATH = "D:/cookieStore.properties";
-	
+
 	private static String TEST_URL = "https://www.zhihu.com/people/edit";
-	
-	private static RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD_STRICT).build();  
-	
-	private static CloseableHttpClient httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();  
-	
-	
+
+	private static RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD_STRICT).build();
+
+	private static CloseableHttpClient httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
+
+
 	/**
-	 * Ä£ÄâÓÃ»§µÇÂ¼Öªºõ
+	 * æ¨¡æ‹Ÿç”¨æˆ·ç™»å½•çŸ¥ä¹
 	 */
 	public void loginZhiHu(){
-		
+
 	}
-	
+
 	/**
-	 * »ñÈ¡Ê×Ò³µÄÒş²ØÓòÖĞµÄxsrfÖµ
-	 * @throws IOException 
+	 * è·å–é¦–é¡µçš„éšè—åŸŸä¸­çš„xsrfå€¼
+	 * @throws IOException
 	 */
 	public static String getXsrf() throws IOException{
 		Document doc = Jsoup.connect(LOGIN_URL).get();
@@ -77,62 +77,64 @@ public class HttpUtils {
 		String _xsrf = _xsrfInput.attr("value");
 		return _xsrf;
 	}
-	
+
 	/**
-	 * µÇÂ¼Ê×Ò³²¢±£´æµÇÂ¼ºóµÄcookie
+	 * ç™»å½•é¦–é¡µå¹¶ä¿å­˜ç™»å½•åçš„cookie
 	 * @param username
 	 * @param password
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void setCookieStore(String username,String password) throws Exception{
 
 		String _xsrf = getXsrf();
-		 //¹¹ÔìpostÊı¾İ
-        List<NameValuePair> valuePairs = new LinkedList<NameValuePair>();
-        valuePairs.add(new BasicNameValuePair("_xsrf", _xsrf));
-        valuePairs.add(new BasicNameValuePair("email", username));
-        valuePairs.add(new BasicNameValuePair("password", password));
-        valuePairs.add(new BasicNameValuePair("remember_me", "true"));
-        
+		//æ„é€ postæ•°æ®
+		List<NameValuePair> valuePairs = new LinkedList<NameValuePair>();
+		valuePairs.add(new BasicNameValuePair("_xsrf", _xsrf));
+		valuePairs.add(new BasicNameValuePair("email", username));
+		valuePairs.add(new BasicNameValuePair("password", password));
+		valuePairs.add(new BasicNameValuePair("remember_me", "true"));
+
         /*
-         * ´´½¨postÇëÇó£¬½«ÇëÇó²ÎÊıĞ´ÈëÇëÇóÖĞ
+         * åˆ›å»ºpostè¯·æ±‚ï¼Œå°†è¯·æ±‚å‚æ•°å†™å…¥è¯·æ±‚ä¸­
          */
-        HttpPost post = new HttpPost(LOGIN_URL);
-        post.setEntity(new UrlEncodedFormEntity(valuePairs, Consts.UTF_8));
-        
+		HttpPost post = new HttpPost(LOGIN_URL);
+		post.setEntity(new UrlEncodedFormEntity(valuePairs, Consts.UTF_8));
+
         /*
-         * »ñÈ¡ÏìÓ¦ÏûÏ¢Ìå
+         * è·å–å“åº”æ¶ˆæ¯ä½“
          */
-        HttpResponse httpResponse = httpClient.execute(post);
-        HttpEntity entity = httpResponse.getEntity();
-        
+		HttpResponse httpResponse = httpClient.execute(post);
+		HttpEntity entity = httpResponse.getEntity();
+
         /*
-         * ±£´æcookie
+         * ä¿å­˜cookie
          */
-        File cookieFile = new File(FILE_COOKIE_PATH);
-        if(!cookieFile.exists()){
-        	cookieFile.createNewFile();
-        }
-	    Header[] headers = httpResponse.getHeaders("Set-Cookie");
-	    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(cookieFile));
-	    for(Header header : headers){
-	    	String cookie = header.getValue().split(";")[0];
-	    	bos.write(cookie.getBytes());
-	    	bos.write("\r\n".getBytes());//»»ĞĞ
-	    }
-	    bos.close();
+		File cookieFile = new File(FILE_COOKIE_PATH);
+		if(!cookieFile.exists()){
+			cookieFile.createNewFile();
+		}
+		Header[] headers = httpResponse.getHeaders("Set-Cookie");
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(cookieFile));
+		for(Header header : headers){
+
+			String cookie = header.getValue().split(";")[0];
+			System.out.println(cookie);
+			bos.write(cookie.getBytes());
+			bos.write("\r\n".getBytes());//æ¢è¡Œ
+		}
+		bos.close();
 	    /*
-	     * ÉèÖÃcookie
+	     * è®¾ç½®cookie
 	     */
-	    setCookie();
+		setCookie();
 	}
-	
-	
+
+
 	/**
-	 * ÉèÖÃcookie
+	 * è®¾ç½®cookie
 	 * @author zhangyx
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private static void setCookie() throws Exception{
 		cookieStore = new BasicCookieStore();
@@ -144,15 +146,15 @@ public class HttpUtils {
 			String key = String.valueOf(obj);
 			String value = pro.getProperty(key);
 			BasicClientCookie cookie = new BasicClientCookie(key, value);
-		    cookie.setVersion(0);
-		    cookie.setDomain(DOMAIN);
-		    cookie.setPath("/");
+			cookie.setVersion(0);
+			cookie.setDomain(DOMAIN);
+			cookie.setPath("/");
 			cookieStore.addCookie(cookie);
 		}
 	}
 
 	/**
-	 * ²âÊÔµÇÂ¼ºóµÄµÄCOOKIEÊÇ·ñ¿ÉÓÃ
+	 * æµ‹è¯•ç™»å½•åçš„çš„COOKIEæ˜¯å¦å¯ç”¨
 	 * @throws IOException
 	 * @author zhangyx
 	 */
@@ -166,29 +168,29 @@ public class HttpUtils {
 			String key = String.valueOf(obj);
 			String value = pro.getProperty(key);
 			BasicClientCookie cookie = new BasicClientCookie(key, value);
-		    cookie.setVersion(0);
-		    cookie.setDomain(DOMAIN);
-		    cookie.setPath("/");
+			cookie.setVersion(0);
+			cookie.setDomain(DOMAIN);
+			cookie.setPath("/");
 			cookieStore.addCookie(cookie);
 		}
-	  CloseableHttpClient client = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
-      HttpGet g = new HttpGet(TEST_URL);  
-      CloseableHttpResponse r = client.execute(g);//»ñÈ¡×Ó¼¯¹Ø×¢µÄÎÊÌâÒ³Ãæ²âÊÔÒ»ÏÂÊÇ·ñµÇÂ½³É¹¦  
-      System.out.println(EntityUtils.toString(r.getEntity()));  
-      r.close();  
+		CloseableHttpClient client = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
+		HttpGet g = new HttpGet(TEST_URL);
+		CloseableHttpResponse r = client.execute(g);//è·å–å­é›†å…³æ³¨çš„é—®é¢˜é¡µé¢æµ‹è¯•ä¸€ä¸‹æ˜¯å¦ç™»é™†æˆåŠŸ
+		System.out.println(EntityUtils.toString(r.getEntity()));
+		r.close();
 	}
-	
+
 	/**
-	 * ¸ù¾İurl»ñÈ¡html
+	 * æ ¹æ®urlè·å–html
 	 * @author zhangyx
 	 * @param url
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public  static String getHtml(String url) throws IOException{
-	  CloseableHttpClient client = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
-      HttpGet g = new HttpGet(url);  
-      CloseableHttpResponse r = client.execute(g);
-      return EntityUtils.toString(r.getEntity());
+		CloseableHttpClient client = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
+		HttpGet g = new HttpGet(url);
+		CloseableHttpResponse r = client.execute(g);
+		return EntityUtils.toString(r.getEntity());
 	}
 }

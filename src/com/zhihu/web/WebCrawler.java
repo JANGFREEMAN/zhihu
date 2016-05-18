@@ -7,18 +7,17 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.zhihu.util.SerializeUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 import com.zhihu.model.User;
 import com.zhihu.util.HttpUtils;
 import com.zhihu.util.JdbcUtils;
 import com.zhihu.util.Queue;
-import com.zhihu.util.SerializeUtil;
 
 /**
  * @author zhangyx
@@ -27,42 +26,47 @@ import com.zhihu.util.SerializeUtil;
 public class  WebCrawler {
 	/***/
 	private  Queue unVisitedUser = new Queue("unVisitedUser");
-	
-	/**ÒÑ¾­ÅÀÈ¡ĞÅÏ¢µÄÓÃ»§¶ÓÁĞ*/
+
+	/**å·²ç»çˆ¬å–ä¿¡æ¯çš„ç”¨æˆ·é˜Ÿåˆ—*/
 	private  Queue visitedUser = new Queue("visitedUser");
-	
-	/**ÓÃ»§ÏêÇé*/
+
+	/**ç”¨æˆ·è¯¦æƒ…*/
 	private  Queue UserQueue = new Queue("userQueue");
-	
-	/**ÕËºÅ¸öÈËÖ÷Ò³µØÖ·*/
+
+	/**è´¦å·ä¸ªäººä¸»é¡µåœ°å€*/
 	private  String homeUrl = "https://www.zhihu.com/people/zhang-yong-xiang-12";
-	
-	/**¶¨ÒåÒ»°ÑËø*/
+
+	/**å®šä¹‰ä¸€æŠŠé”*/
 	private Lock lock = new ReentrantLock();
-	
+
 	private Condition condition1 = lock.newCondition();
-	
+
 	private Condition condition2 = lock.newCondition();
-	
-	
-	
+
+
+
 	/**
-	 * ³õÊ¼»¯¶ÓÁĞ£¬½«ÎÒ¹Ø×¢ÁËºÍ¹Ø×¢Õß¼ÓÈëunVisitedUser¶ÓÁĞÖĞ
+	 * åˆå§‹åŒ–é˜Ÿåˆ—ï¼Œå°†æˆ‘å…³æ³¨äº†å’Œå…³æ³¨è€…åŠ å…¥unVisitedUseré˜Ÿåˆ—ä¸­
 	 * @author zhangyx
 	 */
 	public  void initUnVisitedUser(){
 		getUsersEnQueueByUser(homeUrl);
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
 	/**
-	 * ¸ù¾İuser»ñÈ¡¸Ãuser¹Ø×¢ÁËºÍ¹Ø×¢ÕßµÄÓÃ»§¼ÓÈë¶ÓÁĞ
-	 * @param user ÓÃ»§Ö÷Ò³µØÖ·
+	 * æ ¹æ®userè·å–è¯¥userå…³æ³¨äº†å’Œå…³æ³¨è€…çš„ç”¨æˆ·åŠ å…¥é˜Ÿåˆ—
+	 * @param user ç”¨æˆ·ä¸»é¡µåœ°å€
 	 */
 	public  void getUsersEnQueueByUser(String user){
 		try {
-			/*ÓÃ»§¹Ø×¢ÁËµØÖ·*/
+			/*ç”¨æˆ·å…³æ³¨äº†åœ°å€*/
 			String followeesUrl = user + "/followees";
-			/*ÓÃ»§¹Ø×¢ÕßµØÖ·*/
+			/*ç”¨æˆ·å…³æ³¨è€…åœ°å€*/
 			String followersUrl = user + "/followers";
 			String followeesHtml = HttpUtils.getHtml(followeesUrl);
 			String followersHtml = HttpUtils.getHtml(followersUrl);
@@ -73,7 +77,7 @@ public class  WebCrawler {
 				Element userElement = userElements.get(i);
 				String url = userElement.attr("href");
 				if(!url.trim().equals("")&&!unVisitedUser.contains(url)&&!visitedUser.contains(url)){
-					System.out.println(url+":½øÈë¶ÓÁĞ");
+					System.out.println(url+":è¿›å…¥é˜Ÿåˆ—");
 					unVisitedUser.enQueue(url);
 				}
 			}
@@ -82,7 +86,7 @@ public class  WebCrawler {
 				Element userElement = userElements.get(i);
 				String url = userElement.attr("href");
 				if(!url.trim().equals("")&&!unVisitedUser.contains(url)&&!visitedUser.contains(url)){
-					System.out.println(url+":½øÈë¶ÓÁĞ");
+					System.out.println(url+":è¿›å…¥é˜Ÿåˆ—");
 					unVisitedUser.enQueue(url);
 				}
 			}
@@ -90,14 +94,14 @@ public class  WebCrawler {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	/**
-	 * »ñÈ¡ÓÃ»§¹Ø×¢ÁËµÄÓÃ»§
-	 * @param user ÓÃ»§Ö÷Ò³µØÖ·
+	 * è·å–ç”¨æˆ·å…³æ³¨äº†çš„ç”¨æˆ·
+	 * @param user ç”¨æˆ·ä¸»é¡µåœ°å€
 	 */
 	public  List<String> getFolloweesUsersByUser(String user){
 		try {
-			/*ÓÃ»§¹Ø×¢ÁËµØÖ·*/
+			/*ç”¨æˆ·å…³æ³¨äº†åœ°å€*/
 			String followeesUrl = user + "/followees";
 			String followeesHtml = HttpUtils.getHtml(followeesUrl);
 			Document followeesDoc = Jsoup.parse(followeesHtml);
@@ -114,14 +118,14 @@ public class  WebCrawler {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * »ñÈ¡¹Ø×¢ÁË¸ÃÓÃ»§µÄÓÃ»§
-	 * @param user ÓÃ»§Ö÷Ò³µØÖ·
+	 * è·å–å…³æ³¨äº†è¯¥ç”¨æˆ·çš„ç”¨æˆ·
+	 * @param user ç”¨æˆ·ä¸»é¡µåœ°å€
 	 */
 	public   List<String> getFollowersUsersByUser(String user){
 		try {
-			/*ÓÃ»§¹Ø×¢ÕßµØÖ·*/
+			/*ç”¨æˆ·å…³æ³¨è€…åœ°å€*/
 			String followersUrl = user + "/followers";
 			String followersHtml = HttpUtils.getHtml(followersUrl);
 			Document followersDoc = Jsoup.parse(followersHtml);
@@ -138,74 +142,74 @@ public class  WebCrawler {
 		}
 		return null;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	/**
-	 * ¸ù¾İÓÃ»§Ö÷Ò³µØÖ·×¥È¡ÓÃ»§»ù±¾ĞÅÏ¢
+	 * æ ¹æ®ç”¨æˆ·ä¸»é¡µåœ°å€æŠ“å–ç”¨æˆ·åŸºæœ¬ä¿¡æ¯
 	 * @param user
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public  User crawlerUser(String user) throws IOException{
-		/*ÓÃ»§ÏêÇéÒ³  = ÓÃ»§Ö÷Ò³ + "/about"*/
+		/*ç”¨æˆ·è¯¦æƒ…é¡µ  = ç”¨æˆ·ä¸»é¡µ + "/about"*/
 		String url = user + "/about";
 		String html = HttpUtils.getHtml(url);
 		Document doc = Jsoup.parse(html);
 		User u = new User();
-		/**ÓÃ»§Ãû*/
-		 String username = doc.select(".ellipsis a").size() == 0 ? "":doc.select(".ellipsis a").get(0).text();
-		 u.setUsername(username);
-		/**¸öĞÔÇ©Ãû*/
-		 String signature = doc.select(".ellipsis span").size() == 0 ? "":doc.select(".ellipsis span").get(0).text();
-		 u.setSignature(signature);
-		/**¾Ó×¡µØ*/
-		 String location = doc.select("[data-name = location] span.location").size() == 0 ?"":doc.select("[data-name = location] span.location").get(0).attr("title");
-		 u.setLocation(location);
-		 /**ĞĞÒµ*/
-		 String industry = doc.select("[data-name = location] span.business").size() == 0 ? "":doc.select("[data-name = location] span.business").get(0).attr("title");
-		 u.setIndustry(industry);
-		 /**ĞÔ±ğ*/
-		 String sex = doc.select("[data-name = location] span.gender i").size() == 0 ? "" : doc.select("[data-name = location] span.gender i").get(0).className().indexOf("male") > 0?"ÄĞ":"Å®" ;
-		 u.setSex(sex);
-		 /**¹«Ë¾*/
-		 String company = doc.select("[data-name = employment] span.employment").size() == 0 ?  "" : doc.select("[data-name = employment] span.employment").get(0).attr("title");
-		 u.setCompany(company);
-		 /**Ö°Î»*/
-		 String job = doc.select("[data-name = employment] span.position ").size() == 0 ? "" : doc.select("[data-name = employment] span.position ").get(0).attr("title");
-		 u.setJob(job);
-		 /**´óÑ§*/
-		 String university = doc.select("[data-name = education] span.education ").size() == 0 ? "" : doc.select("[data-name = education] span.education ").get(0).attr("title");
-		 u.setUniversity(university);
-		 /**×¨Òµ*/
-		 String major = doc.select("[data-name = education] span.education-extra ").size() == 0 ? "" : doc.select("[data-name = education] span.education-extra ").get(0).attr("title");
-		 u.setMajor(major);
-		 /**¸öÈË¼ò½é*/
-		 String persionProfile =   doc.select("[data-name = description] span.content ").size() == 0 ? "" : doc.select("[data-name = description] span.content ").get(0).text();
-		 u.setPersionProfile(persionProfile);
-		 u.setFollow(getFolloweesUsersByUser(user));
-		 u.setFollower(getFollowersUsersByUser(user));
-		 return u;
+		/**ç”¨æˆ·å*/
+		String username = doc.select(".ellipsis a").size() == 0 ? "":doc.select(".ellipsis a").get(0).text();
+		u.setUsername(username);
+		/**ä¸ªæ€§ç­¾å*/
+		String signature = doc.select(".ellipsis span").size() == 0 ? "":doc.select(".ellipsis span").get(0).text();
+		u.setSignature(signature);
+		/**å±…ä½åœ°*/
+		String location = doc.select("[data-name = location] span.location").size() == 0 ?"":doc.select("[data-name = location] span.location").get(0).attr("title");
+		u.setLocation(location);
+		/**è¡Œä¸š*/
+		String industry = doc.select("[data-name = location] span.business").size() == 0 ? "":doc.select("[data-name = location] span.business").get(0).attr("title");
+		u.setIndustry(industry);
+		/**æ€§åˆ«*/
+		String sex = doc.select("[data-name = location] span.gender i").size() == 0 ? "" : doc.select("[data-name = location] span.gender i").get(0).className().indexOf("male") > 0?"ç”·":"å¥³" ;
+		u.setSex(sex);
+		/**å…¬å¸*/
+		String company = doc.select("[data-name = employment] span.employment").size() == 0 ?  "" : doc.select("[data-name = employment] span.employment").get(0).attr("title");
+		u.setCompany(company);
+		/**èŒä½*/
+		String job = doc.select("[data-name = employment] span.position ").size() == 0 ? "" : doc.select("[data-name = employment] span.position ").get(0).attr("title");
+		u.setJob(job);
+		/**å¤§å­¦*/
+		String university = doc.select("[data-name = education] span.education ").size() == 0 ? "" : doc.select("[data-name = education] span.education ").get(0).attr("title");
+		u.setUniversity(university);
+		/**ä¸“ä¸š*/
+		String major = doc.select("[data-name = education] span.education-extra ").size() == 0 ? "" : doc.select("[data-name = education] span.education-extra ").get(0).attr("title");
+		u.setMajor(major);
+		/**ä¸ªäººç®€ä»‹*/
+		String persionProfile =   doc.select("[data-name = description] span.content ").size() == 0 ? "" : doc.select("[data-name = description] span.content ").get(0).text();
+		u.setPersionProfile(persionProfile);
+		u.setFollow(getFolloweesUsersByUser(user));
+		u.setFollower(getFollowersUsersByUser(user));
+		return u;
 	}
-	
+
 	/**
-	 * Ïß³ÌÈÎÎñ×¥È¡ÓÃ»§
+	 * çº¿ç¨‹ä»»åŠ¡æŠ“å–ç”¨æˆ·
 	 * @author zhangyx
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public  synchronized void getUsersTask() throws IOException{
 		String user = unVisitedUser.deQueue();
 		getUsersEnQueueByUser(user);
 		visitedUser.enQueue(user);
-		System.out.println(String.format("%s:Ïß³Ì×¥È¡%s¹Ø×¢µÄÓÃ»§,´ËÊ±unVisitedUsr¶ÓÁĞ´óĞ¡Îª£º%s,visitedUser¶ÓÁĞ´óĞ¡Îª£º%s", Thread.currentThread().getName(),user,unVisitedUser.size(),visitedUser.size()));
+		System.out.println(String.format("%s:çº¿ç¨‹æŠ“å–%så…³æ³¨çš„ç”¨æˆ·,æ­¤æ—¶unVisitedUsré˜Ÿåˆ—å¤§å°ä¸ºï¼š%s,visitedUseré˜Ÿåˆ—å¤§å°ä¸ºï¼š%s", Thread.currentThread().getName(),user,unVisitedUser.size(),visitedUser.size()));
 	}
-	
+
 	/**
-	 * Ïß³ÌÈÎÎñ»ñÈ¡ÓÃ»§ÏêÇé
+	 * çº¿ç¨‹ä»»åŠ¡è·å–ç”¨æˆ·è¯¦æƒ…
 	 * @author zhangyx
-	 * @throws IOException 
-	 * @throws InterruptedException 
+	 * @throws IOException
+	 * @throws InterruptedException
 	 */
 	private int i = 0 ;
 	public    synchronized void crawlUserInfoTask() throws IOException, InterruptedException {
@@ -215,56 +219,53 @@ public class  WebCrawler {
 		JdbcUtils.SaveUser(u);
 		i++;
 	}
-	
+
 	/**
-	 * ½«ÓÃ»§ĞÅÏ¢¶ÓÁĞ±£´æµ½Êı¾İ¿âÖĞ
-	 * @throws InterruptedException 
+	 * å°†ç”¨æˆ·ä¿¡æ¯é˜Ÿåˆ—ä¿å­˜åˆ°æ•°æ®åº“ä¸­
+	 * @throws InterruptedException
 	 */
 	public  void getUserQueueInDataBase() throws InterruptedException{
 		lock.lock();
 		while(UserQueue.isEmpty()){
-			System.out.println(String.format("%s:Ïß³ÌÖ´ĞĞ´æ´¢Êı¾İ¿âÊ±userQueue¶ÓÁĞÎª¿Õ£¬¹ÒÆğµÈ´ı", Thread.currentThread().getName()));
+			System.out.println(String.format("%s:çº¿ç¨‹æ‰§è¡Œå­˜å‚¨æ•°æ®åº“æ—¶userQueueé˜Ÿåˆ—ä¸ºç©ºï¼ŒæŒ‚èµ·ç­‰å¾…", Thread.currentThread().getName()));
 			condition2.await();
 		}
 		String userData = UserQueue.deQueue();
-		User user  = (User)SerializeUtil.unSerizlize(userData.getBytes());
-		System.out.println(String.format("%s:Ïß³Ì¿ªÊ¼½«ÓÃ»§%sĞÅÏ¢´æÈëÊı¾İ¿âÖĞ", Thread.currentThread().getName(),user));
+		User user  = (User) SerializeUtil.unSerizlize(userData.getBytes());
+		System.out.println(String.format("%s:çº¿ç¨‹å¼€å§‹å°†ç”¨æˆ·%sä¿¡æ¯å­˜å…¥æ•°æ®åº“ä¸­", Thread.currentThread().getName(),user));
 		JdbcUtils.SaveUser(user);
 		lock.unlock();
 	}
-	
-	
+
+
 	/**
 	 * @author zhangyx
-	 * ³õÊ¼»¯ÅÀ³æ
-	 * @throws Exception 
+	 * åˆå§‹åŒ–çˆ¬è™«
+	 * @throws Exception
 	 */
 	public void initCrawler() throws Exception{
 		/*
-		 * ÉèÖÃcookie
+		 * è®¾ç½®cookie
 		 */
 		HttpUtils.setCookieStore("448313485@qq.com", "freeman111");
 		/*
-		 * ³õÊ¼»¯ÓÃ»§½øÈëunVisitedUser¶ÓÁĞÖĞ
+		 * åˆå§‹åŒ–ç”¨æˆ·è¿›å…¥unVisitedUseré˜Ÿåˆ—ä¸­
 		 */
 		initUnVisitedUser();
 	}
-	
-	
-	
+
 	/**
 	 * @author zhangyx
-	 * ¿ªÊ¼ÅÀ³æ
+	 * å¼€å§‹çˆ¬è™«
 	 */
 	public void crawling(){
 		try {
-			/*³õÊ¼»¯ÅÀ³æ*/
+			/*åˆå§‹åŒ–çˆ¬è™«*/
 			initCrawler();
-			
 			/*
-			 * ¶¨ÒåÏß³Ì£¬×¥ÓÃ»§½øÈëunVisitedUser¶ÓÁĞÖĞ
+			 * å®šä¹‰çº¿ç¨‹ï¼ŒæŠ“ç”¨æˆ·è¿›å…¥unVisitedUseré˜Ÿåˆ—ä¸­
 			 */
-			for(int i = 0 ; i < 3 ; i ++){
+			for(int i = 0 ; i < 1 ; i ++){
 				new Thread(new  Runnable() {
 					public void run() {
 						while(true){
@@ -279,9 +280,9 @@ public class  WebCrawler {
 			}
 			
 			/*
-			 * ¶¨ÒåÏß³Ì£¬ÅÀÈ¡ÓÃ»§ĞÅÏ¢
+			 * å®šä¹‰çº¿ç¨‹ï¼Œçˆ¬å–ç”¨æˆ·ä¿¡æ¯
 			 */
-			for(int i = 0 ; i < 3 ; i ++){
+			for(int i = 0 ; i < 1 ; i ++){
 				new Thread(new  Runnable() {
 					public void run() {
 						while(true){
@@ -296,7 +297,7 @@ public class  WebCrawler {
 					}
 				}).start();
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
