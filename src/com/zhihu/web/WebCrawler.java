@@ -244,14 +244,10 @@ public class  WebCrawler {
 	 * @throws Exception
 	 */
 	public void initCrawler() throws Exception{
-		/*
-		 * 设置cookie
+		/**
+		 * 初始化数据进入队列
 		 */
-		HttpUtils.setCookieStore("448313485@qq.com", "freeman111");
-		/*
-		 * 初始化用户进入unVisitedUser队列中
-		 */
-		initUnVisitedUser();
+		List<String> userUrl = HttpUtils.getHtml(homeUrl);
 	}
 
 	/**
@@ -262,6 +258,7 @@ public class  WebCrawler {
 		try {
 			/*初始化爬虫*/
 			initCrawler();
+			getUsersTask();
 			/*
 			 * 定义线程，抓用户进入unVisitedUser队列中
 			 */

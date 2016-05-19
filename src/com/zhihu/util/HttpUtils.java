@@ -87,43 +87,43 @@ public class HttpUtils {
 	 */
 	public static void setCookieStore(String username,String password) throws Exception{
 
-		String _xsrf = getXsrf();
-		//构造post数据
-		List<NameValuePair> valuePairs = new LinkedList<NameValuePair>();
-		valuePairs.add(new BasicNameValuePair("_xsrf", _xsrf));
-		valuePairs.add(new BasicNameValuePair("email", username));
-		valuePairs.add(new BasicNameValuePair("password", password));
-		valuePairs.add(new BasicNameValuePair("remember_me", "true"));
-
-        /*
-         * 创建post请求，将请求参数写入请求中
-         */
-		HttpPost post = new HttpPost(LOGIN_URL);
-		post.setEntity(new UrlEncodedFormEntity(valuePairs, Consts.UTF_8));
-
-        /*
-         * 获取响应消息体
-         */
-		HttpResponse httpResponse = httpClient.execute(post);
-		HttpEntity entity = httpResponse.getEntity();
-
-        /*
-         * 保存cookie
-         */
-		File cookieFile = new File(FILE_COOKIE_PATH);
-		if(!cookieFile.exists()){
-			cookieFile.createNewFile();
-		}
-		Header[] headers = httpResponse.getHeaders("Set-Cookie");
-		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(cookieFile));
-		for(Header header : headers){
-
-			String cookie = header.getValue().split(";")[0];
-			System.out.println(cookie);
-			bos.write(cookie.getBytes());
-			bos.write("\r\n".getBytes());//换行
-		}
-		bos.close();
+//		String _xsrf = getXsrf();
+//		//构造post数据
+//		List<NameValuePair> valuePairs = new LinkedList<NameValuePair>();
+//		valuePairs.add(new BasicNameValuePair("_xsrf", _xsrf));
+//		valuePairs.add(new BasicNameValuePair("email", username));
+//		valuePairs.add(new BasicNameValuePair("password", password));
+//		valuePairs.add(new BasicNameValuePair("remember_me", "true"));
+//
+//        /*
+//         * 创建post请求，将请求参数写入请求中
+//         */
+//		HttpPost post = new HttpPost(LOGIN_URL);
+//		post.setEntity(new UrlEncodedFormEntity(valuePairs, Consts.UTF_8));
+//
+//        /*
+//         * 获取响应消息体
+//         */
+//		HttpResponse httpResponse = httpClient.execute(post);
+//		HttpEntity entity = httpResponse.getEntity();
+//
+//        /*
+//         * 保存cookie
+//         */
+//		File cookieFile = new File(FILE_COOKIE_PATH);
+//		if(!cookieFile.exists()){
+//			cookieFile.createNewFile();
+//		}
+//		Header[] headers = httpResponse.getHeaders("Set-Cookie");
+//		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(cookieFile));
+//		for(Header header : headers){
+//
+//			String cookie = header.getValue().split(";")[0];
+//			System.out.println(cookie);
+//			bos.write(cookie.getBytes());
+//			bos.write("\r\n".getBytes());//换行
+//		}
+//		bos.close();
 	    /*
 	     * 设置cookie
 	     */
@@ -145,12 +145,14 @@ public class HttpUtils {
 		for(Object obj : keySet){
 			String key = String.valueOf(obj);
 			String value = pro.getProperty(key);
+			System.out.println(value+"==================================================");
 			BasicClientCookie cookie = new BasicClientCookie(key, value);
 			cookie.setVersion(0);
 			cookie.setDomain(DOMAIN);
 			cookie.setPath("/");
 			cookieStore.addCookie(cookie);
 		}
+		testCookie();
 	}
 
 	/**
@@ -158,7 +160,7 @@ public class HttpUtils {
 	 * @throws IOException
 	 * @author zhangyx
 	 */
-	public void testCookie() throws IOException{
+	public static void testCookie() throws IOException{
 		CookieStore cookieStore = new BasicCookieStore();
 		FileInputStream fis = new FileInputStream(FILE_COOKIE_PATH);
 		Properties pro = new Properties();

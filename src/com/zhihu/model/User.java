@@ -4,115 +4,160 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * �û�model
+ * 知乎用户模型
  * @author zhangyx
  */
 public class User  implements Serializable{
 	private static final long serialVersionUID = -5257620614071365321L;
-	/**�û���*/
+	/**主页地址*/
+	private String homeUrl;
+	/**用户名*/
 	private String username;
-	/**����ǩ��*/
+	/**个性签名*/
 	private String signature;
-	/**��ס��*/
+	/**居住地*/
 	private String location;
-	/**��ҵ*/
+	/**行业*/
 	private String industry;
-	/**�Ա�*/
+	/**性别*/
 	private String sex;
-	/**��˾*/
+	/**公司*/
 	private String company;
-	/**ְλ*/
+	/**职位*/
 	private String job;
-	/**��ѧ*/
+	/**大学*/
 	private String university;
-	/**רҵ*/
+	/**专业*/
 	private String major;
-	/**���˼��*/
+	/**个人简介*/
 	private String PersionProfile;
-	/**��ע*/
-	private List<String> follow;
-	/**��ע��*/
-	private List<String> follower;
-	public String getUsername() {
-		return username;
+	/**我关注了谁*/
+	private List<User> followeesUser;
+	/**谁关注了我*/
+	private List<User> followersUser;
+	/**关注了地址（查看我关注了谁地址）*/
+	private List<User> followeesUrl;
+	/**关注者地址（查看谁关注了我地址）*/
+	private List<User> followersUrl;
+
+	public void setHomeUrl(String homeUrl) {
+		this.homeUrl = homeUrl;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getSignature() {
-		return signature;
-	}
+
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-	public String getLocation() {
-		return location;
-	}
+
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getIndustry() {
-		return industry;
-	}
+
 	public void setIndustry(String industry) {
 		this.industry = industry;
 	}
-	public String getSex() {
-		return sex;
-	}
+
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	public String getCompany() {
-		return company;
-	}
+
 	public void setCompany(String company) {
 		this.company = company;
 	}
-	public String getJob() {
-		return job;
-	}
+
 	public void setJob(String job) {
 		this.job = job;
 	}
-	public String getUniversity() {
-		return university;
-	}
+
 	public void setUniversity(String university) {
 		this.university = university;
 	}
-	public String getMajor() {
-		return major;
-	}
+
 	public void setMajor(String major) {
 		this.major = major;
-	}
-	public String getPersionProfile() {
-		return PersionProfile;
 	}
 
 	public void setPersionProfile(String persionProfile) {
 		PersionProfile = persionProfile;
 	}
-	public List<String> getFollow() {
-		return follow;
+
+	public void setFolloweesUser(List<User> followeesUser) {
+		this.followeesUser = followeesUser;
 	}
-	public void setFollow(List<String> follow) {
-		this.follow = follow;
+
+	public void setFollowersUser(List<User> followersUser) {
+		this.followersUser = followersUser;
 	}
-	public List<String> getFollower() {
-		return follower;
+
+	public void setFolloweesUrl(List<User> followeesUrl) {
+		this.followeesUrl = followeesUrl;
 	}
-	public void setFollower(List<String> follower) {
-		this.follower = follower;
+
+	public void setFollowersUrl(List<User> followersUrl) {
+		this.followersUrl = followersUrl;
 	}
-	
-	@Override
-	public String toString() {
-		return "User [username=" + username + ", signature=" + signature + ", location=" + location + ", industry="
-				+ industry + ", sex=" + sex + ", company=" + company + ", job=" + job + ", university=" + university
-				+ ", major=" + major + ", PersionProfile=" + PersionProfile + ", follow=" + follow + ", follower="
-				+ follower + "]";
+
+	public String getHomeUrl() {
+
+		return homeUrl;
 	}
-	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public String getIndustry() {
+		return industry;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public String getJob() {
+		return job;
+	}
+
+	public String getUniversity() {
+		return university;
+	}
+
+	public String getMajor() {
+		return major;
+	}
+
+	public String getPersionProfile() {
+		return PersionProfile;
+	}
+
+	public List<User> getFolloweesUser() {
+		return followeesUser;
+	}
+
+	public List<User> getFollowersUser() {
+		return followersUser;
+	}
+
+	public List<User> getFolloweesUrl() {
+		return followeesUrl;
+	}
+
+	public List<User> getFollowersUrl() {
+		return followersUrl;
+	}
 }
