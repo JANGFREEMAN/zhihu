@@ -2,7 +2,6 @@ package com.zhihu.web;
 
 import java.io.IOException;
 
-import com.zhihu.util.HttpUtils;
 
 public class CrawlerClient {
 
