@@ -19,12 +19,14 @@ public class CrawlerTask {
      */
     public void crawlUser(){
         while (true){
-            if(queue.size() == 2000000){//如果爬取了两百万数据结束爬虫
-                return ;
+            synchronized (this){
+                if(queue.size() == 2000000){//如果爬取了两百万数据结束爬虫
+                    return ;
+                }
+                String homeUrl = queue.deQueue();
+                ParseHtmlUtil.getHomeUrlsEnQueueByHomeUrl(homeUrl);
+                System.out.println("此时队列大小为==================================================================："+queue.size());
             }
-            String homeUrl = queue.deQueue();
-            ParseHtmlUtil.getHomeUrlsEnQueueByHomeUrl(homeUrl);
-            System.out.println("此时队列大小为==================================================================："+queue.size());
         }
     }
     /**
