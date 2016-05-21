@@ -1,5 +1,8 @@
 package com.zhihu.test;
 
+import com.zhihu.inter.Queue;
+import com.zhihu.inter.impl.UserQueue;
+import com.zhihu.model.User;
 import com.zhihu.util.JedisUtils;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
@@ -25,6 +28,26 @@ public class TestRedisUtils {
     public void testDel(){
         Jedis jedis = JedisUtils.getInstance();
         jedis.del("test");
+    }
+
+    @Test
+    public void testDelQueue(){
+        Queue queue = UserQueue.getInstance();
+        queue.empty();
+    }
+
+    @Test
+    public void testSaveUsr(){
+        User user = new User();
+        user.setCompany("sdf");
+        Jedis jedis = JedisUtils.getInstance();
+//        jedis.lpush
+    }
+
+    @Test
+    public void testHash(){
+        Jedis jedis = JedisUtils.getInstance();
+//        jedis.set
     }
 
 }

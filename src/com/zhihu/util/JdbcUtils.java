@@ -20,7 +20,7 @@ public class JdbcUtils {
     // 表示定义数据库的用户名sd
     private static final String USERNAME = "root";
     // 定义数据库的密码
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "root";
     // 定义数据库的驱动信息
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     // 定义访问数据库的地址
@@ -43,29 +43,6 @@ public class JdbcUtils {
     	  e.printStackTrace();
       }
     }
-    
-	public static void SaveUser(User user) throws SQLException {
-        pstmt = connection.prepareStatement(SQL);
-        try {
-			pstmt.setString(1, user.getUsername());
-			pstmt.setString(2, user.getSignature());
-			pstmt.setString(3, user.getLocation());
-			pstmt.setString(4, user.getIndustry());
-			pstmt.setString(5, user.getSex());
-			pstmt.setString(6, user.getCompany());
-			pstmt.setString(7, user.getJob());
-			pstmt.setString(8, user.getUniversity());
-			pstmt.setString(9, user.getMajor());
-			pstmt.setString(10, user.getPersionProfile());
-			pstmt.setString(11, "");
-			pstmt.setString(12,"");
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-
-		}
-	}
 
     /**
      * 保存用户信息进入数据库
@@ -79,6 +56,7 @@ public class JdbcUtils {
             int i = 0;
             while(!queue.isEmpty()){
                 synchronized (JdbcUtils.class){
+                    System.out.println("保存用户信息线程：=================================================================："+Thread.currentThread().getName());
                     User user = ParseHtmlUtil.crawlerUser(queue.get(i));
                     pstmt.setString(1, user.getUsername());
                     pstmt.setString(2, user.getSignature());
@@ -94,7 +72,7 @@ public class JdbcUtils {
                     pstmt.setString(12,"");
                     pstmt.addBatch();
                     i++;
-                    if(i%100==0){//可以设置不同的大小；如50，100，500，1000等等
+                    if(i%50==0){//每次增加100条记录
                         pstmt.executeBatch();
                         pstmt.clearBatch();
                         connection.commit();
@@ -103,7 +81,6 @@ public class JdbcUtils {
             }
             pstmt.close();
             connection.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {

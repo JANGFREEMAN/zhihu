@@ -57,21 +57,30 @@ public class  WebCrawler {
 			}).start();
 		}
 
-		for(int i = 0 ; i < 3 ; i++){
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						task.saveUsersInDatabase();
-					} catch (IOException e) {
-						System.out.println("保存用户信息报错======================================");
-					}
-				}
-			}).start();
-		}
+//		for(int i = 0 ; i < 3 ; i++){
+//			new Thread(new Runnable() {
+//				@Override
+//				public void run() {
+//					task.crawUserDetail();
+//				}
+//			}).start();
+//		}
 
 
-		task.crawlUser();
+//		for(int i = 0 ; i < 3 ; i++){
+//			new Thread(new Runnable() {
+//				@Override
+//				public void run() {
+//					try {
+//						task.saveUsersInDatabase();
+//					} catch (IOException e) {
+//						System.out.println("保存用户信息报错======================================");
+//					}
+//				}
+//			}).start();
+//		}
+
+
 	}
 
 }

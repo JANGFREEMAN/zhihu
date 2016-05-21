@@ -15,7 +15,7 @@ public abstract class Queue {
      * 入队列
      * @param user
      */
-    public void enQueue(String user){
+    public synchronized void enQueue(String user){
         jedis.rpush(KEY, user);
     }
 
@@ -24,7 +24,7 @@ public abstract class Queue {
      * @author zhangyx
      * @return
      */
-    public String deQueue(){
+    public synchronized String deQueue(){
         return jedis.lpop(KEY);
     }
 
@@ -32,7 +32,7 @@ public abstract class Queue {
      * 根据下表取值
      * @return
      */
-    public String get(int index){
+    public synchronized String get(int index){
         return jedis.lindex(KEY, index);
     }
 
@@ -43,7 +43,7 @@ public abstract class Queue {
      * @param user
      * @return
      */
-    public boolean contains(String user){
+    public synchronized boolean contains(String user){
         List<String> list = jedis.lrange(KEY, 0, -1);
         for(String  str : list){
             if(str.equalsIgnoreCase(user)){
@@ -58,7 +58,7 @@ public abstract class Queue {
      * @author zhangyx
      * @return
      */
-    public boolean isEmpty(){
+    public synchronized boolean isEmpty(){
         List<String> list = jedis.lrange(KEY, 0, -1);
         return list.size() == 0 ? true : false;
     }
@@ -68,9 +68,16 @@ public abstract class Queue {
      * @author zhangyx
      * @return
      */
-    public int size(){
+    public synchronized int size(){
         List<String> list = jedis.lrange(KEY, 0, -1);
         return list.size();
+    }
+
+    /**
+     * 清空队列
+     */
+    public synchronized void empty(){
+        jedis.del(KEY);
     }
 
     /**
