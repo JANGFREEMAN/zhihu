@@ -7,6 +7,6 @@ public class CrawlerClient {
 
 	public static void main(String[] args) throws IOException {
 		WebCrawler crawler = new WebCrawler();
-		crawler.crawling();
+		crawler.crawling()           ;
 	}
 }
