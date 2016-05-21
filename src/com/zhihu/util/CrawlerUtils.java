@@ -60,7 +60,6 @@ public class  CrawlerUtils {
 		u.setPersionProfile(persionProfile);
 //		u.setFollow(getFolloweesUsersByUser(user));
 //		u.setFollower(getFollowersUsersByUser(user));
-		System.out.println(u.toString());
 	}
 
 }
