@@ -48,7 +48,8 @@ public class  WebCrawler {
 		 */
 		final CrawlerTask task  = new CrawlerTask();
 
-		for(int i = 0 ; i < 3 ; i++){
+
+		for(int i = 0 ; i < 10 ; i++){
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -57,28 +58,14 @@ public class  WebCrawler {
 			}).start();
 		}
 
-//		for(int i = 0 ; i < 3 ; i++){
-//			new Thread(new Runnable() {
-//				@Override
-//				public void run() {
-//					task.crawUserDetail();
-//				}
-//			}).start();
-//		}
-
-
-//		for(int i = 0 ; i < 3 ; i++){
-//			new Thread(new Runnable() {
-//				@Override
-//				public void run() {
-//					try {
-//						task.saveUsersInDatabase();
-//					} catch (IOException e) {
-//						System.out.println("保存用户信息报错======================================");
-//					}
-//				}
-//			}).start();
-//		}
+		for(int i = 0 ; i < 10 ; i++){
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					task.saveUsersInDatabase();
+				}
+			}).start();
+		}
 
 
 	}

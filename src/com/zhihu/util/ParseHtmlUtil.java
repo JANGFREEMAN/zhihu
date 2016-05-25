@@ -9,6 +9,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 解析html工具类
@@ -72,6 +74,7 @@ public class ParseHtmlUtil {
         String html = HttpUtils.getHtml(url);
         Document doc = Jsoup.parse(html);
         User u = new User();
+        u.setHomeUrl(url);
         /**用户名*/
         String username = doc.select(".ellipsis a").size() == 0 ? "":doc.select(".ellipsis a").get(0).text();
         u.setUsername(username);
@@ -85,7 +88,7 @@ public class ParseHtmlUtil {
         String industry = doc.select("[data-name = location] span.business").size() == 0 ? "":doc.select("[data-name = location] span.business").get(0).attr("title");
         u.setIndustry(industry);
         /**性别*/
-        String sex = doc.select("[data-name = location] span.gender i").size() == 0 ? "" : doc.select("[data-name = location] span.gender i").get(0).className().indexOf("male") > 0?"男":"女" ;
+        String sex = doc.select("[data-name = location] span.gender i").size() == 0 ? "" : (doc.select("[data-name = location] span.gender i").get(0).className().indexOf("female") > 0?"女":"男" );
         u.setSex(sex);
         /**公司*/
         String company = doc.select("[data-name = employment] span.employment").size() == 0 ?  "" : doc.select("[data-name = employment] span.employment").get(0).attr("title");
@@ -102,7 +105,47 @@ public class ParseHtmlUtil {
         /**个人简介*/
         String persionProfile =   doc.select("[data-name = description] span.content ").size() == 0 ? "" : doc.select("[data-name = description] span.content ").get(0).text();
         u.setPersionProfile(persionProfile);
+//        u.setFolloweesUserName(getFolloweesUsersByUser(homeUrl));
+//        u.setFollowersUserName(getFollowersUsersByUser(homeUrl));
         return u;
     }
 
+
+    public static  List<String> getFolloweesUsersByUser(String user){
+        try {
+            String followeesUrl = user + "/followees";
+            String followeesHtml = HttpUtils.getHtml(followeesUrl);
+            Document followeesDoc = Jsoup.parse(followeesHtml);
+            Elements userElements =followeesDoc.select(".zm-list-content-title > a ");
+            List<String> users = new ArrayList<String>();
+            for(int i = 0 ; i < userElements.size() ; i ++){
+                Element userElement = userElements.get(i);
+                String username = userElement.attr("title");
+                users.add(username);
+            }
+            return users;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    private  static  List<String> getFollowersUsersByUser(String user){
+        try {
+            String followersUrl = user + "/followers";
+            String followersHtml = HttpUtils.getHtml(followersUrl);
+            Document followersDoc = Jsoup.parse(followersHtml);
+            Elements userElements =followersDoc.select(".zm-list-content-title > a ");
+            List<String> users = new ArrayList<String>();
+            for(int i = 0 ; i < userElements.size() ; i ++){
+                Element userElement = userElements.get(i);
+                String username = userElement.attr("title");
+                users.add(username);
+            }
+            return users;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }

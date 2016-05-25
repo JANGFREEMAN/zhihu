@@ -58,8 +58,6 @@ public class  CrawlerUtils {
 		/**个人简介*/
 		String persionProfile = doc.select("[data-name = description] span.content ").get(0).text();
 		u.setPersionProfile(persionProfile);
-//		u.setFollow(getFolloweesUsersByUser(user));
-//		u.setFollower(getFollowersUsersByUser(user));
 	}
 
 }

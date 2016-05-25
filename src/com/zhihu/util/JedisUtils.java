@@ -29,4 +29,5 @@ public class JedisUtils {
 		}
 		return jedis;
 	}
+
 }

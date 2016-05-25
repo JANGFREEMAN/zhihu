@@ -32,13 +32,10 @@ public class User  implements Serializable{
 	/**个人简介*/
 	private String PersionProfile;
 	/**我关注了谁*/
-	private List<User> followeesUser;
+	private List<String> followeesUserName;
 	/**谁关注了我*/
-	private List<User> followersUser;
-	/**关注了地址（查看我关注了谁地址）*/
-	private List<User> followeesUrl;
-	/**关注者地址（查看谁关注了我地址）*/
-	private List<User> followersUrl;
+	private List<String> followersUserName;
+
 
 	public void setHomeUrl(String homeUrl) {
 		this.homeUrl = homeUrl;
@@ -84,21 +81,7 @@ public class User  implements Serializable{
 		PersionProfile = persionProfile;
 	}
 
-	public void setFolloweesUser(List<User> followeesUser) {
-		this.followeesUser = followeesUser;
-	}
 
-	public void setFollowersUser(List<User> followersUser) {
-		this.followersUser = followersUser;
-	}
-
-	public void setFolloweesUrl(List<User> followeesUrl) {
-		this.followeesUrl = followeesUrl;
-	}
-
-	public void setFollowersUrl(List<User> followersUrl) {
-		this.followersUrl = followersUrl;
-	}
 
 	public String getHomeUrl() {
 
@@ -145,19 +128,38 @@ public class User  implements Serializable{
 		return PersionProfile;
 	}
 
-	public List<User> getFolloweesUser() {
-		return followeesUser;
+	public List<String> getFolloweesUserName() {
+		return followeesUserName;
 	}
 
-	public List<User> getFollowersUser() {
-		return followersUser;
+	@Override
+	public String toString() {
+		return "User{" +
+				"homeUrl='" + homeUrl + '\'' +
+				", username='" + username + '\'' +
+				", signature='" + signature + '\'' +
+				", location='" + location + '\'' +
+				", industry='" + industry + '\'' +
+				", sex='" + sex + '\'' +
+				", company='" + company + '\'' +
+				", job='" + job + '\'' +
+				", university='" + university + '\'' +
+				", major='" + major + '\'' +
+				", PersionProfile='" + PersionProfile + '\'' +
+				", followeesUserName=" + followeesUserName +
+				", followersUserName=" + followersUserName +
+				'}';
 	}
 
-	public List<User> getFolloweesUrl() {
-		return followeesUrl;
+	public void setFolloweesUserName(List<String> followeesUserName) {
+		this.followeesUserName = followeesUserName;
 	}
 
-	public List<User> getFollowersUrl() {
-		return followersUrl;
+	public List<String> getFollowersUserName() {
+		return followersUserName;
+	}
+
+	public void setFollowersUserName(List<String> followersUserName) {
+		this.followersUserName = followersUserName;
 	}
 }
