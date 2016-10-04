@@ -13,3 +13,9 @@ haha
 <div style="width:100px;height:100px;background:red">
 sdf
 </div>
+
+<table>
+    <tr>
+        <td>Foo</td>
+    </tr>
+</table>
