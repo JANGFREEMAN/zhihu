@@ -16,6 +16,6 @@ sdf
 
 <table>
     <tr>
-        <td>Foo</td>
+        <td style="color:red">Foo</td>
     </tr>
 </table>
