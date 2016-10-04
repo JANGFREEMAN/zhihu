@@ -7,6 +7,6 @@
 首先是解决访问页面需要登陆权限的问题，登陆知乎首页，打开chrome的network选项获取登陆之后的cookie
 
 <p align = "center">
-haha
+    <img src = "http://www.xitongzhijia.net/zt/help/images/x17.jpg" width = "100px" height = "100px">
 </p>
 
